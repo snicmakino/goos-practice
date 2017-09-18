@@ -2,7 +2,7 @@ package end_to_end;
 
 import end_to_end.auctionsniper.ApplicationRunner;
 import end_to_end.auctionsniper.FakeAuctionServer;
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 public class AuctionSniperEndToEndTest {
@@ -19,12 +19,12 @@ public class AuctionSniperEndToEndTest {
     }
 
     // 追加のクリーンアップ
-    @AfterAll
+    @AfterEach
     public void stopAuction() {
         auction.stop();
     }
 
-    @AfterAll
+    @AfterEach
     public void stopApplication() {
         application.stop();
     }

@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class FakeAuctionServer {
     private final SingleMessageListener messageListener = new SingleMessageListener();
 
-    public static final String ITEM_ID_AS_LOGIN = "auction-%s";
     public static final String AUCTION_RESOURCE = "Auction";
+    public static final String ITEM_ID_AS_LOGIN = "auction-%s";
     public static final String XMPP_HOSTNAME = "localhost";
     private static final String AUCTION_PASSWORD = "auction";
 
@@ -33,6 +33,7 @@ public class FakeAuctionServer {
                 AUCTION_RESOURCE);
         connection.getChatManager().addChatListener(
                 new ChatManagerListener() {
+                    @Override
                     public void chatCreated(Chat chat, boolean createdLocally) {
                         currentChat = chat;
                         chat.addMessageListener(messageListener);
@@ -60,6 +61,7 @@ public class FakeAuctionServer {
     public class SingleMessageListener implements MessageListener {
         private final ArrayBlockingQueue<Message> messages = new ArrayBlockingQueue<>(1);
 
+        @Override
         public void processMessage(Chat chat, Message message) {
             messages.add(message);
         }
