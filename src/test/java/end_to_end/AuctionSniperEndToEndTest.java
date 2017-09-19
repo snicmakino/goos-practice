@@ -20,6 +20,23 @@ public class AuctionSniperEndToEndTest {
         application.showsSniperHasLostAuction();
     }
 
+    @Test
+    @DisplayName("商品ひとつ：参加し、入札し、落札に失敗する")
+    public void sniperMakesAHigherBitButLoses() throws Exception {
+        auction.startSellingItem();
+
+        application.startBiddingIn(auction);
+        auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.reportPrice(10000, 98, "other bidder");
+
+        application.hasShownSniperIsBidding();
+        auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.announceClosed();
+        application.showsSniperHasLostAuction();
+    }
+
     // 追加のクリーンアップ
     @AfterEach
     public void stopAuction() {

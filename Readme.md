@@ -7,8 +7,9 @@ GOOSのサンプルプロジェクトはXMPPでのメッセージングを行う
 openfireのインストールと、設定を行う必要がある  
 https://www.igniterealtime.org/projects/openfire/  
   
-openfireをインストール、起動したら、以下の設定を行う  
-
+openfireをインストール、起動したら、以下の設定を行う
+(「XMPP Domain Name」の設定は「localhost」とすること)  
+  
 ### ユーザ作成
 ユーザ名/パスワード  
 sniper/sniper  
