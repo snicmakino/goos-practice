@@ -3,6 +3,7 @@ package end_to_end;
 import end_to_end.auctionsniper.ApplicationRunner;
 import end_to_end.auctionsniper.FakeAuctionServer;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class AuctionSniperEndToEndTest {
@@ -10,6 +11,7 @@ public class AuctionSniperEndToEndTest {
     private final ApplicationRunner application = new ApplicationRunner();
 
     @Test
+    @DisplayName("商品ひとつ：参加し、入札せずに落札に失敗する")
     public void sniperJoinsAuctionUntilAuctionCloses() throws Exception {
         auction.startSellingItem();
         application.startBiddingIn(auction);
