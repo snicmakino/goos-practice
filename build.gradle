@@ -40,7 +40,7 @@ dependencies {
     testRuntime("org.apache.logging.log4j:log4j-core:${log4jVersion}")
     testRuntime("org.apache.logging.log4j:log4j-jul:${log4jVersion}")
 
-    // Only needed to run tests in an (IntelliJ) IDE(A) that bundles an older version
+    testCompile("name.falgout.jeffrey.testing.junit5:mockito-extension:1.0.0")
     testRuntime("org.junit.platform:junit-platform-launcher:${junitPlatformVersion}")
 }
 
