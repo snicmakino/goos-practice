@@ -1,6 +1,7 @@
 package auctionsniper;
 
 import auctionsniper.ui.MainWindow;
+import auctionsniper.xmpp.XMPPAuction;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
@@ -9,7 +10,9 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class Main implements SniperListener {
+import static java.lang.String.format;
+
+public class Main {
     public static final String AUCTION_RESOURCE = "Auction";
     public static final String ITEM_ID_AS_LOGIN = "auction-%s";
     public static final String AUCTION_ID_FORMAT = ITEM_ID_AS_LOGIN + "@%s/" + AUCTION_RESOURCE;
@@ -48,16 +51,11 @@ public class Main implements SniperListener {
                 null);
         this.notToBeGCd = chat;
 
-        Auction auction = (amount) -> {
-            try {
-                chat.sendMessage(String.format(BID_COMMAND_FORMAT, amount));
-            } catch (XMPPException e) {
-                e.printStackTrace();
-            }
-        };
+        Auction auction = new XMPPAuction(chat);
         chat.addMessageListener(
-                new AuctionMessageTranslator(new AuctionSniper(auction, this)));
-        chat.sendMessage(JOIN_COMMAND_FORMAT);
+                new AuctionMessageTranslator(
+                        new AuctionSniper(auction, new SniperStateDisplayer())));
+        auction.join();
     }
 
     private void disconnectWhenUICloses(final XMPPConnection connection) {
@@ -81,20 +79,31 @@ public class Main implements SniperListener {
     }
 
     private static String auctionId(String itemId, XMPPConnection connection) {
-        return String.format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
+        return format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
     }
 
     private void startUserInterface() throws Exception {
         SwingUtilities.invokeAndWait(() -> ui = new MainWindow());
     }
 
-    @Override
-    public void sniperLost() {
-        SwingUtilities.invokeLater(() -> ui.showStatus(MainWindow.STATUS_LOST));
-    }
+    private class SniperStateDisplayer implements SniperListener {
+        @Override
+        public void sniperBidding() {
+            SwingUtilities.invokeLater(() -> ui.showStatus(MainWindow.STATUS_BIDDING));
+        }
 
-    @Override
-    public void sniperBidding() {
-        SwingUtilities.invokeLater(() -> ui.showStatus(MainWindow.STATUS_BIDDING));
+        @Override
+        public void sniperLost() {
+            SwingUtilities.invokeLater(() -> ui.showStatus(MainWindow.STATUS_LOST));
+        }
+
+        @Override
+        public void sniperWinning() {
+            SwingUtilities.invokeLater(() -> ui.showStatus(MainWindow.STATUS_WINNING));
+        }
+
+        private void showStatus(final String status) {
+            SwingUtilities.invokeLater(() -> ui.showStatus(status));
+        }
     }
 }
