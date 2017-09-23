@@ -2,14 +2,12 @@ package unit_test;
 
 import auctionsniper.AuctionEventListener;
 import auctionsniper.AuctionMessageTranslator;
-import name.falgout.jeffrey.testing.junit5.MockitoExtension;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.packet.Message;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class AuctionMessageTranslatorTest {
